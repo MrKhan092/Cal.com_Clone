@@ -1,5 +1,6 @@
 const prisma = require('../config/db');
 const { bookingSchema } = require('../models/booking.model');
+const emailService = require('../services/emailService');
 
 const getBookings = async (req, res) => {
   try {
@@ -41,6 +42,10 @@ const createBooking = async (req, res) => {
       data: { ...data, status: 'confirmed' },
       include: { eventType: true }
     });
+    
+    // Send confirmation email
+    await emailService.sendBookingConfirmation(booking);
+
     res.status(201).json(booking);
   } catch (err) {
     if (err.name === 'ZodError') return res.status(400).json({ error: err.errors });
@@ -52,8 +57,13 @@ const cancelBooking = async (req, res) => {
   try {
     const booking = await prisma.booking.update({
       where: { id: req.params.id },
-      data: { status: 'cancelled' }
+      data: { status: 'cancelled' },
+      include: { eventType: true }
     });
+    
+    // Send cancellation email
+    await emailService.sendBookingCancellation(booking);
+
     res.json({ message: 'Booking cancelled', booking });
   } catch (err) {
     if (err.code === 'P2025') return res.status(404).json({ error: 'Booking not found' });
