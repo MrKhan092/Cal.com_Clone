@@ -1,28 +1,28 @@
 import React from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
-import { Calendar, Clock, List, LayoutDashboard } from 'lucide-react';
+import { Link, Calendar, Clock, LayoutDashboard } from 'lucide-react';
 
 const Layout = () => {
   return (
     <div className="layout-container">
       <aside className="sidebar">
         <div className="sidebar-logo">
-          <Calendar size={24} color="var(--brand-primary)" />
-          <span>Cal.com Clone</span>
+          <img src="https://github.com/nutlope.png" alt="Avatar" style={{width: 20, height: 20, borderRadius: '50%'}} />
+          <span>Mohammad Kaif</span>
         </div>
-        <nav className="sidebar-nav mt-6">
+        <nav className="sidebar-nav">
           <NavLink to="/event-types" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <List size={20} /> Event Types
-          </NavLink>
-          <NavLink to="/availability" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <Clock size={20} /> Availability
+             <Link size={16} /> Event types
           </NavLink>
           <NavLink to="/bookings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <LayoutDashboard size={20} /> Bookings
+            <Calendar size={16} /> Bookings
+          </NavLink>
+          <NavLink to="/availability" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+            <Clock size={16} /> Availability
           </NavLink>
         </nav>
       </aside>
-      <main className="main-content fade-in">
+      <main className="main-content">
         <Outlet />
       </main>
     </div>
