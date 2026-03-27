@@ -4,17 +4,9 @@ const emailService = require('../services/emailService');
 
 const getBookings = async (req, res) => {
   try {
-    const { filter } = req.query; // upcoming | past | all
-    const now = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-
-    const where = { status: 'confirmed' };
-    if (filter === 'upcoming') where.date = { gte: now };
-    else if (filter === 'past') where.date = { lt: now };
-
     const bookings = await prisma.booking.findMany({
-      where,
       include: { eventType: true },
-      orderBy: { date: filter === 'past' ? 'desc' : 'asc' }
+      orderBy: { createdAt: 'desc' }
     });
     res.json(bookings);
   } catch (err) {
