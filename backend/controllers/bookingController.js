@@ -28,14 +28,16 @@ const createBooking = async (req, res) => {
 
     const toMins = (t) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
 
-    // Double booking check
+    // Double booking check with 15-minute Buffer padding
+    const BUFFER_MINS = 15;
     const existing = await prisma.booking.findMany({
       where: { date: data.date, status: 'confirmed' }
     });
-    const conflict = existing.some(b =>
-      toMins(data.startTime) < toMins(b.endTime) &&
-      toMins(b.startTime) < toMins(data.endTime)
-    );
+    const conflict = existing.some(b => {
+      const paddedBStart = Math.max(0, toMins(b.startTime) - BUFFER_MINS);
+      const paddedBEnd = toMins(b.endTime) + BUFFER_MINS;
+      return toMins(data.startTime) < paddedBEnd && paddedBStart < toMins(data.endTime);
+    });
     if (conflict) return res.status(409).json({ error: 'Time slot is already booked' });
 
     const booking = await prisma.booking.create({

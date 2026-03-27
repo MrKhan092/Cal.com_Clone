@@ -56,11 +56,14 @@ const getAvailableSlots = async (req, res) => {
       where: { date, status: 'confirmed' }
     });
 
+    // Apply a standard 15-minute buffer between meetings
+    const BUFFER_MINS = 15;
     const freeSlots = slots.filter(slot =>
-      !existingBookings.some(b =>
-        toMins(slot.startTime) < toMins(b.endTime) &&
-        toMins(b.startTime) < toMins(slot.endTime)
-      )
+      !existingBookings.some(b => {
+        const paddedBStart = Math.max(0, toMins(b.startTime) - BUFFER_MINS);
+        const paddedBEnd = toMins(b.endTime) + BUFFER_MINS;
+        return toMins(slot.startTime) < paddedBEnd && paddedBStart < toMins(slot.endTime);
+      })
     );
 
     res.json(freeSlots);
