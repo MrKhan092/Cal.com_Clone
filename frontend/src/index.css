@@ -63,7 +63,6 @@ p { color: var(--text-secondary); font-size: 0.875rem; }
 .list-container {
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
-  overflow: hidden;
   background: var(--bg-primary);
 }
 .list-item {
