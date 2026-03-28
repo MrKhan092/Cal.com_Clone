@@ -197,4 +197,4 @@ npm run dev            # http://localhost:5173
 ## Author
 
 **Mohammad Kaif**
-[GitHub](https://github.com/MrKhan092) everything i s correct
+[GitHub](https://github.com/MrKhan092)
