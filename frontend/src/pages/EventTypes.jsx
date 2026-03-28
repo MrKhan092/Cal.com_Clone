@@ -57,6 +57,16 @@ export default function EventTypes() {
             <input required type="text" className="form-input" value={formData.slug} onChange={e => setFormData({...formData, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '')})} />
           </div>
           <div className="form-group">
+            <label className="form-label">Description</label>
+            <textarea 
+              className="form-input" 
+              style={{ minHeight: '100px', resize: 'vertical', paddingTop: '0.75rem' }} 
+              placeholder="A quick video meeting."
+              value={formData.description} 
+              onChange={e => setFormData({...formData, description: e.target.value})} 
+            />
+          </div>
+          <div className="form-group">
             <label className="form-label">Duration (minutes)</label>
             <input required type="number" min="5" className="form-input" value={formData.duration} onChange={e => setFormData({...formData, duration: Number(e.target.value)})} />
           </div>

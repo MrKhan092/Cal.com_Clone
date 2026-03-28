@@ -7,7 +7,7 @@ const getEventTypes = async (req, res) => {
     const eventTypes = await prisma.eventType.findMany({ orderBy: { createdAt: 'desc' } });
     res.json(eventTypes);
   } catch (err) {
-    res.status(500).json({ error: err.message || 'Failed to fetch event types' });
+    res.status(500).json({ error: 'Failed to fetch event types' });
   }
 };
 
@@ -19,7 +19,7 @@ const createEventType = async (req, res) => {
   } catch (err) {
     if (err.name === 'ZodError') return res.status(400).json({ error: err.errors });
     if (err.code === 'P2002') return res.status(409).json({ error: 'Slug already exists' });
-    res.status(500).json({ error: err.message || 'Failed to create event type' });
+    res.status(500).json({ error: 'Failed to create event type' });
   }
 };
 
@@ -31,7 +31,7 @@ const updateEventType = async (req, res) => {
   } catch (err) {
     if (err.name === 'ZodError') return res.status(400).json({ error: err.errors });
     if (err.code === 'P2025') return res.status(404).json({ error: 'Event type not found' });
-    res.status(500).json({ error: err.message || 'Failed to update event type' });
+    res.status(500).json({ error: 'Failed to update event type' });
   }
 };
 
@@ -41,7 +41,7 @@ const deleteEventType = async (req, res) => {
     res.json({ message: 'Event type deleted' });
   } catch (err) {
     if (err.code === 'P2025') return res.status(404).json({ error: 'Event type not found' });
-    res.status(500).json({ error: err.message || 'Failed to delete event type' });
+    res.status(500).json({ error: 'Failed to delete event type' });
   }
 };
 
