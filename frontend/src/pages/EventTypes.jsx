@@ -5,6 +5,7 @@ import { Plus, Search, ExternalLink, Link as LinkIcon, MoreHorizontal, Clock, Ed
 export default function EventTypes() {
   const [eventTypes, setEventTypes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
   
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -82,10 +83,23 @@ export default function EventTypes() {
         </div>
       </div>
 
+      <div className="mb-6" style={{ position: 'relative' }}>
+        <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+        <input 
+          type="text" 
+          placeholder="Search event types..." 
+          className="form-input" 
+          style={{ width: '100%', paddingLeft: '40px' }} 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
       <div className="list-container">
         {loading ? <div className="list-item"><p>Loading...</p></div> : 
           eventTypes.length === 0 ? <div className="list-item"><p>No event types configured.</p></div> : 
-          eventTypes.map(event => (
+          eventTypes.filter(event => event.title.toLowerCase().includes(searchTerm.toLowerCase()) || event.slug.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 ? <div className="list-item"><p>No results found for "{searchTerm}".</p></div> : 
+          eventTypes.filter(event => event.title.toLowerCase().includes(searchTerm.toLowerCase()) || event.slug.toLowerCase().includes(searchTerm.toLowerCase())).map(event => (
           <div key={event.id} className="list-item">
             <div>
               <div className="flex items-center gap-2 mb-2">
