@@ -6,7 +6,7 @@ const getAvailability = async (req, res) => {
     const availability = await prisma.availability.findMany({ orderBy: { dayOfWeek: 'asc' } });
     res.json(availability);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch availability' });
+    res.status(500).json({ error: err.message || 'Failed to fetch availability' });
   }
 };
 
@@ -21,7 +21,7 @@ const updateAvailability = async (req, res) => {
     res.json(updated);
   } catch (err) {
     if (err.name === 'ZodError') return res.status(400).json({ error: err.errors });
-    res.status(500).json({ error: 'Failed to update availability' });
+    res.status(500).json({ error: err.message || 'Failed to update availability' });
   }
 };
 
@@ -68,7 +68,7 @@ const getAvailableSlots = async (req, res) => {
 
     res.json(freeSlots);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch available slots' });
+    res.status(500).json({ error: err.message || 'Failed to fetch available slots' });
   }
 };
 

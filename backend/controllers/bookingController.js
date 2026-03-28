@@ -10,7 +10,7 @@ const getBookings = async (req, res) => {
     });
     res.json(bookings);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch bookings' });
+    res.status(500).json({ error: err.message || 'Failed to fetch bookings' });
   }
 };
 
@@ -43,7 +43,7 @@ const createBooking = async (req, res) => {
     res.status(201).json(booking);
   } catch (err) {
     if (err.name === 'ZodError') return res.status(400).json({ error: err.errors });
-    res.status(500).json({ error: 'Failed to create booking' });
+    res.status(500).json({ error: err.message || 'Failed to create booking' });
   }
 };
 
@@ -61,7 +61,7 @@ const cancelBooking = async (req, res) => {
     res.json({ message: 'Booking cancelled', booking });
   } catch (err) {
     if (err.code === 'P2025') return res.status(404).json({ error: 'Booking not found' });
-    res.status(500).json({ error: 'Failed to cancel booking' });
+    res.status(500).json({ error: err.message || 'Failed to cancel booking' });
   }
 };
 
